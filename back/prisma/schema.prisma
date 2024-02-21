@@ -17,13 +17,13 @@ model User {
   email String @unique
 }
 
-//Alternativas
+//Alternativa
 
 //Questao
 model Questao {
   id           Int      @id @default(autoincrement()) //falou colocar o UUID
   titulo       String   @unique
-  Alternativas String[]
+  Alternativas String[] //depois tem que trocar esse tipo, pq o novo tipo vai ser Alternativa
   resposta     String
 }
 
