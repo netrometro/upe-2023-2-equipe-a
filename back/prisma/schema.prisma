@@ -17,7 +17,16 @@ model User {
   email String @unique
 }
 
+<<<<<<< Updated upstream
 //Alternativa
+=======
+//Alternativas
+model Alternativa {
+  id        Int       @id @default(autoincrement())
+  texto     String    
+  letras    String    
+}
+>>>>>>> Stashed changes
 
 //Questao
 model Questao {
