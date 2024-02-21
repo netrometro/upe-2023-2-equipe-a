@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 const Questao = ({ id, titulo, alternativas, resposta }) => {
   return (
