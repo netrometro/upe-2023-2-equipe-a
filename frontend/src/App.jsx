@@ -1,6 +1,6 @@
 //import { useState } from 'react'
 import './App.css'
-import Questao from './componentes/Questao'
+import Questao from './componentes/Questoes/Questao'
 
 function App() {
 
@@ -13,7 +13,9 @@ function App() {
   return (
     <>
       <div>
-      <h1>Projeto teste Gerencia de Configuraçao</h1>
+      <h1>Banco de Questões e Formulador de Provas</h1>
+      <br/>
+      <br/>
       <Questao  {...questao} />
       </div>
     </>
