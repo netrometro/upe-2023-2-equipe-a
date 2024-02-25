@@ -6,7 +6,7 @@ const Routes = express.Router(); //variavel para chamada do Router
 
 //CRUD -> Rotas do CRUD
 //C
-Routes.post("/Questoes", (res, req) => {
+Routes.post("/Questoes", (req, res ) => {
   const { name } = req.body?.titulo || {};
 
   Questoes.push({ name });
