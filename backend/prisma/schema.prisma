@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = "postgresql://admin:password@localhost:5432"
+  provider = "sqlite"
+  url      = "file./dev.db"
 }
 
 //Usuario
@@ -26,9 +26,10 @@ model Alternativa {
 
 //Questao
 model Questao {
-  id           Int      @id @default(autoincrement()) //falou colocar o UUID
-  titulo       String   @unique
-  Alternativas String[] //depois tem que trocar esse tipo, pq o novo tipo vai ser Alternativa
+  id           Int    @id @default(autoincrement()) //falou colocar o UUID
+  titulo       String @unique
+  Alternativas String //nao pode ser string por conta do sqlite parece, vamo ver isso depois
+  //depois tem que trocar esse tipo, pq o novo tipo vai ser Alternativa
   resposta     String
 }
 
