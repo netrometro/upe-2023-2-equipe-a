@@ -1,17 +1,21 @@
 //Arquivo para rotas 
 const express = require("express");
+const Routes = express.Router(); //variavel para chamada do Router
+const {PrismaClient} = require("@prisma/client");
+const prisma = new PrismaClient();
 
+//
 const Questoes = [{id: 1,
   titulo: 'Qual é a capital do Brasil?',
   alternativas: ['Rio de Janeiro', 'Brasília', 'São Paulo', 'Salvador'],}];
-const Routes = express.Router(); //variavel para chamada do Router
+//
 
 //CRUD -> Rotas do CRUD
 //C
-Routes.post("/AddQuestoes", (req, res ) => {
-  const { titulo } = req.body?.titulo;
+Routes.post("/AddQuestoes", (request, response) => {
+  const { titulo } = request.body?.titulo;
   Questoes.push({ titulo });
-  return res.status(201).json(Questoes);
+  return response.status(201).json(Questoes);
 });
 
 //R
