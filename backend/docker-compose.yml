@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  database: 
+    image: docker.io/library/postgres:latest
+    container_name: GerenciaConfiguracao
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRESS_DB=GerenciaConfiguracao
+    volumes:
+      - pgdata:/data/postgres
+
+volumes:
+  pgdata:
+    driver: local

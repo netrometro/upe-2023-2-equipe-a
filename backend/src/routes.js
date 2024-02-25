@@ -1,19 +1,23 @@
 //Arquivo para rotas 
 const express = require("express");
 
-const Questoes = [{ name: 'Brasil'}];
+const Questoes = [{id: 1,
+  titulo: 'Qual é a capital do Brasil?',
+  alternativas: ['Rio de Janeiro', 'Brasília', 'São Paulo', 'Salvador'],}];
 const Routes = express.Router(); //variavel para chamada do Router
 
 //CRUD -> Rotas do CRUD
 //C
-Routes.post("/Questoes", (req, res ) => {
-  const { name } = req.body?.titulo || {};
-
-  Questoes.push({ name });
+Routes.post("/AddQuestoes", (req, res ) => {
+  const { titulo } = req.body?.titulo;
+  Questoes.push({ titulo });
   return res.status(201).json(Questoes);
 });
 
 //R
+Routes.get("/listarQuestoes" , (request, response) => {
+  return response.status(200).json(Questoes)
+})
 
 //U
 
