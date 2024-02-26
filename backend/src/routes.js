@@ -31,6 +31,18 @@ Routes.put("/UpdateQuestoes", async (request, response) => {
 
   const {id, titulo, Alternativas, resposta} = request.body;
 
+  //verifica se o id existe
+  if (!id) {
+    return response.status(400).json("Id is mandatory");
+  }
+
+  //verifica se a questao existe
+  const QuestaoExiste = await prisma.todo.findUnique({ where: { id } });
+  if (!todoAlreadyExist) {
+    return response.status(404).json("Todo not exist");
+  }
+
+  //Faz a substituiçao dos valores
   const update = await prisma.questao.put({
     where: {
       id,
@@ -46,7 +58,30 @@ Routes.put("/UpdateQuestoes", async (request, response) => {
 
 })
 //D
+Routes.delete("/DeletarQuestao/:id", async (request, response) => {
+  //pega o id dos parametros da URL
+  const { id } = request.params;
 
+  //verifica de o ID veio na URL
+  const intId = parseInt(id);
+  if (!intId) {
+    return response.status(400).json("Id is mandatory");
+  }
+
+  //verifica se a questao realmente existe
+  const QuestaoAlreadyExist = await prisma.todo.findUnique({
+    where: { id: intId },
+  });
+  if (!todoAlreadyExist) {
+    return response.status(404).json("Todo not exist");
+  }
+
+  //questao existe, manda dleetar
+  await prisma.todo.delete({ where: { id: intId } });
+
+  //retorna ok pra operaçao de deletar a questao pelo id
+  return response.status(200).send();
+});
 
 
 //CRUD Alternativas -> Rotas do CRUD para Alternativas
