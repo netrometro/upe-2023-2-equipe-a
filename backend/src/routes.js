@@ -4,23 +4,27 @@ const Routes = express.Router(); //variavel para chamada do Router
 const {PrismaClient} = require("@prisma/client");
 const prisma = new PrismaClient();
 
-//
-const Questoes = [{id: 1,
-  titulo: 'Qual é a capital do Brasil?',
-  alternativas: ['Rio de Janeiro', 'Brasília', 'São Paulo', 'Salvador'],}];
-//
-
 //CRUD -> Rotas do CRUD
 //C
-Routes.post("/AddQuestoes", (request, response) => {
-  const { titulo } = request.body?.titulo;
-  Questoes.push({ titulo });
-  return response.status(201).json(Questoes);
+Routes.post("/CriarQuestoes", async (request, response) => {
+  const { titulo ,Alternativas,resposta  } = request.body;
+  //Questoes.push({ titulo });
+  const novaQuestao = await prisma.questao.create({
+    data: {
+      titulo: titulo,
+      Alternativas: Alternativas,
+      resposta: resposta,
+    }
+  })
+  return response.status(201).json(novaQuestao);
 });
 
 //R
-Routes.get("/listarQuestoes" , (request, response) => {
-  return response.status(200).json(Questoes)
+Routes.get("/listarTodasQuestoes" , async (request, response) => {
+
+  const listaTodasQestoes = await prisma.questao.findMany();
+
+  return response.status(200).json(listaTodasQestoes)
 })
 
 //U
