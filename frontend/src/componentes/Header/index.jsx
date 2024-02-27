@@ -1,9 +1,9 @@
 import * as C from './styles';
 
-export const Header = () => {
+export const Header = ({ title }) => {
   return (
     <C.Container>
-      <p>Formulador de Provas</p>
+      <p>{title}</p>
     </C.Container>
   )
 }

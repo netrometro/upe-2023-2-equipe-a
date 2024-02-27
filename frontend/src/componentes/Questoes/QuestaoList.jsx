@@ -1,6 +1,6 @@
-import * as C from './styles';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import * as C from './styles';
 
 export const QuestaoList = () => {
   const [questoes, setQuestoes] = useState([]);
@@ -54,3 +54,4 @@ export const QuestaoList = () => {
     </C.Container>
   );
 };
+
