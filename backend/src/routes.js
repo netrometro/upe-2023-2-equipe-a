@@ -15,7 +15,7 @@ Routes.post("/CriarQuestoes", async (request, response) => {
     data: {
       titulo: titulo,
       Alternativas: Alternativas,
-      resposta: resposta,
+      resposta: resposta
     }
   });
   return response.status(201).json(novaQuestao);

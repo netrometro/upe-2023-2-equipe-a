@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const QuestaoForm = ({ onQuestaoSubmit }) => {
+function QuestaoForm () {
   const [titulo, setTitulo] = useState('');
-  const [alternativas, setAlternativas] = useState('');
+  const [Alternativas, setAlternativas] = useState('');
   const [resposta, setResposta] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!titulo || !alternativas || !resposta) {
+    if (!titulo || !Alternativas || !resposta) {
       console.error('Por favor, preencha todos os campos');
       return;
     }
@@ -17,17 +17,17 @@ const QuestaoForm = ({ onQuestaoSubmit }) => {
     try {
       const novaQuestao = {
         titulo,
-        alternativas: alternativas.split(',').map((alt) => alt.trim()), 
+        Alternativas, 
         resposta,
       };
 
-      await axios.post('http://localhost:3333//CriarQuestoes', novaQuestao);
+      await axios.post('http://localhost:3333/CriarQuestoes', novaQuestao);
 
       setTitulo('');
       setAlternativas('');
       setResposta('');
 
-      onQuestaoSubmit();
+     // QuestaoForm();
     } catch (error) {
       console.error('Erro ao criar questão:', error);
     }
@@ -43,7 +43,7 @@ const QuestaoForm = ({ onQuestaoSubmit }) => {
       <br />
       <label>
         Alternativas (separadas por vírgula):
-        <input type="text" value={alternativas} onChange={(e) => setAlternativas(e.target.value)} />
+        <input type="text" value={Alternativas} onChange={(e) => setAlternativas(e.target.value)} />
       </label>
       <br />
       <label>
@@ -54,6 +54,6 @@ const QuestaoForm = ({ onQuestaoSubmit }) => {
       <button type="submit">Criar Questão</button>
     </form>
   );
-};
+}
 
 export default QuestaoForm;
