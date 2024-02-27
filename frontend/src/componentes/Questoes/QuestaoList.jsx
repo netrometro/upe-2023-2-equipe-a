@@ -58,7 +58,7 @@ const QuestaoList = () => {
           <>
           <li key={questao.id}>
             <strong>Título:</strong> {questao.titulo} <br />
-            <strong>Alternativas:</strong> {questao.alternativas} <br />
+            <strong>Alternativas:</strong> {questao.Alternativas} <br />
             <strong>Resposta:</strong> {questao.resposta} <br />
           </li>
           <button onClick={() => deleteQuestao(questao.id)}>
