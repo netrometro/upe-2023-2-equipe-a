@@ -6,11 +6,10 @@ const { response } = require("express");
 
 const prisma = new PrismaClient();
 
-
 //CRUD Questoes -> Rotas do CRUD para Questoes
 //C
 Routes.post("/CriarQuestoes", async (request, response) => {
-  const { titulo ,Alternativas,resposta  } = request.body;
+  const { titulo, Alternativas,resposta  } = request.body;
   //Questoes.push({ titulo });
   const novaQuestao = await prisma.questao.create({
     data: {
@@ -33,22 +32,24 @@ Routes.put("/UpdateQuestao", async (request, response) => {
   //, titulo, Alternativas, resposta
   const {id, titulo, Alternativas, resposta} = request.body;
 
+  const intId = parseInt(id);
+
   //verifica se o id existe
-  if (!id) {
+  if (!intId) {
     return response.status(400).json("Id é obrigatorio");
   }
 
   //verifica se a questao existe
-  const QuestaoExiste = await prisma.questao.findUnique({ where: { id } });
+  const QuestaoExiste = await prisma.questao.findUnique({ where: { id: intId } });
   if (!QuestaoExiste) {
     return response.status(404).json("Questao nao exite");
   }
   
   //Faz a substituiçao dos valores
-  const update = await prisma.questao.put({
-    where: {
-      id,
-    },
+  const update = await prisma.questao.update({
+    where: { 
+      id: intId
+     },
      data:{
       titulo: titulo,
       Alternativas: Alternativas,
