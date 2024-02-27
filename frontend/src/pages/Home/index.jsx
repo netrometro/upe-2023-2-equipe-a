@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { QuestaoList } from "../../componentes/Questao/QuestaoList";
-import * as C from './styles';
+import { QuestaoList } from "../../componentes/Questoes/QuestaoList";
 import { Header } from "../../componentes/Header";
+import * as C from "./styles";
 
 export function Home() {
   const [questoes, setQuestoes] = useState([]);
@@ -15,7 +15,7 @@ export function Home() {
   const fetchQuestoes = async () => {
     try {
       const response = await axios.get("/listarTodasQuestoes");
-      setQuestoes(response.data);
+      setQuestoes(response.data || []); // Define um valor padrão caso a resposta seja vazia ou falsa
     } catch (error) {
       console.error("Erro ao buscar questões:", error);
     }
@@ -33,9 +33,9 @@ export function Home() {
   return (
     <C.Container>
       <Header />
-      {questoes.map((questao) => (
+      {Array.isArray(questoes) && questoes.map((questao) => (
         <div key={questao.id}>
-          <QuestaoList />
+          <QuestaoList questao={questao} /> {/* Passando a questao como propriedade para QuestaoList */}
           <button onClick={() => handleDeleteQuestao(questao.id)}>Deletar</button>
         </div>
       ))}
