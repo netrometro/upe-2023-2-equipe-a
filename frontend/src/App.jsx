@@ -1,14 +1,8 @@
-//import { useState } from 'react'
-import './App.css'
+import './App.css';
+import { AppRoutes } from './routes';
 
-function App() {
+export function App() {
   return (
-    <>
-      <div>
-      <h1>Projeto teste Gerencia de Configuraçao</h1>
-      </div>
-    </>
-  )
+      <AppRoutes />
+  );
 }
-
-export default App
