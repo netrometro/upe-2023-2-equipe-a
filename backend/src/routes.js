@@ -7,6 +7,16 @@ const prisma = new PrismaClient();
 // CRUD Questoes -> Rotas do CRUD para Questoes
 // C
 Routes.post("/CriarQuestoes", async (request, response) => {
+  const { titulo, Alternativas,resposta  } = request.body;
+  //Questoes.push({ titulo });
+  const novaQuestao = await prisma.questao.create({
+    data: {
+      titulo: titulo,
+      Alternativas: Alternativas,
+      resposta: resposta
+    }
+  });
+  return response.status(201).json(novaQuestao);
   const { titulo, Alternativas, resposta } = request.body;
 
   try {
