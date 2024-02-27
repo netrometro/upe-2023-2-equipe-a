@@ -10,7 +10,11 @@ app.use(Routes)
 
 //cors
 const cors = require("cors");
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+}));
 
 
 app.listen(3333, () => console.log("Server runnig in 3333"))
