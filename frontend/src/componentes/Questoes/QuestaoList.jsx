@@ -34,24 +34,33 @@ export const QuestaoList = () => {
     fetchQuestoes();
   };
 
+  //Funçao deletar questao
+  async function deleteQuestao(questaoID) {
+    const response = await axios.delete(
+      `http://localhost:3333/DeletarQuestao/${questaoID}`
+    );
+    handleRefresh();
+  }
+
   return (
-    <C.Container>
-      <div>
-        <h1>Listagem de Questões</h1>
-        {isLoading && <p>Carregando...</p>}
-        {error && <p>{error}</p>}
-        <ul>
-          {questoes.map((questao) => (
-            <li key={questao.id}>
-              <strong>Título:</strong> {questao.titulo} <br />
-              <strong>Alternativas:</strong> {questao.alternativas.join(', ')} <br />
-              <strong>Resposta:</strong> {questao.resposta} <br />
-            </li>
-          ))}
-        </ul>
-        <button onClick={handleRefresh}>Refresh</button>
-      </div>
-    </C.Container>
+    <div>
+      <h1>Listagem de Questões</h1>
+      <ul>
+        {questoes.map((questao) => (
+          <>
+          <li key={questao.id}>
+            <strong>Título:</strong> {questao.titulo} <br />
+            <strong>Alternativas:</strong> {questao.alternativas} <br />
+            <strong>Resposta:</strong> {questao.resposta} <br />
+          </li>
+          <button onClick={() => deleteQuestao(questao.id)}>
+            Deletar Questao
+          </button>
+            </>
+        ))}
+      </ul>
+      <button onClick={handleRefresh}>Refresh</button>
+    </div>
   );
 };
 

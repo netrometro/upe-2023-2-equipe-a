@@ -6,23 +6,6 @@ const prisma = new PrismaClient();
 
 // CRUD Questoes -> Rotas do CRUD para Questoes
 // C
-Routes.post("/CriarQuestoes", async (request, response) => {
-  const { titulo, Alternativas, resposta } = request.body;
-
-  try {
-    const novaQuestao = await prisma.questao.create({
-      data: {
-        titulo: titulo,
-        Alternativas: Alternativas,
-        resposta: resposta,
-      },
-    });
-    return response.status(201).json(novaQuestao);
-  } catch (error) {
-    console.error("Erro ao criar questão:", error);
-    return response.status(500).json({ error: "Erro interno do servidor" });
-  }
-});
 
 // R
 Routes.get("/listarTodasQuestoes", async (request, response) => {
