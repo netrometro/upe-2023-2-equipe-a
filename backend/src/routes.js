@@ -41,7 +41,7 @@ Routes.put("/UpdateQuestao", async (request, response) => {
   if (!QuestaoExiste) {
     return response.status(404).json("Questao nao exite");
   }
-
+  
   //Faz a substituiçao dos valores
   const update = await prisma.questao.put({
     where: {
@@ -55,7 +55,6 @@ Routes.put("/UpdateQuestao", async (request, response) => {
   });
 
   return response.status(200).json(update);
-
 })
 //D
 Routes.delete("/DeletarQuestao/:id", async (request, response) => {
