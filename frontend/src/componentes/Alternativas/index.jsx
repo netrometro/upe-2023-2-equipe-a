@@ -1,6 +1,6 @@
 import * as C from './styles';
 
-export const Alternativa = ({ id, texto, letras }) => {
+export const Alternativa = ({ texto, letras }) => {
     return (
         <C.Container>
             <div>
