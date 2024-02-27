@@ -8,6 +8,9 @@ app.use(express.json())
 const Routes = require('./routes')
 app.use(Routes)
 
+//cors
+const cors = require("cors");
+app.use(cors());
 
 
 app.listen(3333, () => console.log("Server runnig in 3333"))

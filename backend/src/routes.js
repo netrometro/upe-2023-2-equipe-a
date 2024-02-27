@@ -2,6 +2,8 @@
 const express = require("express");
 const Routes = express.Router(); //variavel para chamada do Router
 const {PrismaClient} = require("@prisma/client");
+const { response } = require("express");
+
 const prisma = new PrismaClient();
 
 
