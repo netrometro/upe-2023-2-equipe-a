@@ -10,12 +10,12 @@ export const ListAltern = ({ alternativa }) => {
 
   return (
     <C.Container selecionada={isChecked}>
-      <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={handleChange}
-      />
+      <input 
+      type="checkbox" 
+      checked={isChecked} 
+      onChange={handleChange} />
       <label>{alternativa.texto}</label>
+      <label>{alternativa.letra}</label>
     </C.Container>
   );
 };

@@ -1,5 +1,3 @@
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
 import { Header } from "../../componentes/Header";
 import * as C from "./styles";
 

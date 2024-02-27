@@ -7,7 +7,7 @@ export const AddArea = () => {
     const handleKeyUp = (e) => {
         if (e.key === 'Enter') {
             // Aqui você pode adicionar a lógica para adicionar uma nova tarefa
-            console.log('Adicionar tarefa:', inputText);
+            console.log('Adicionar Alternativa:', inputText);
             setInputText('');
         }
     };

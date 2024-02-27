@@ -83,31 +83,31 @@ Routes.delete("/DeletarQuestao/:id", async (request, response) => {
 
 // CRUD Alternativas -> Rotas do CRUD para Alternativas
 // C
-Routes.post("/CriarAlternativa", async (request, response) => {
-  const { texto, letras } = request.body;
+Routes.post('/CriarAlternativa', async (req, res) => {
+  const { texto, letra } = req.body;
 
   try {
     const novaAlternativa = await prisma.alternativa.create({
       data: {
         texto: texto,
-        letras: letras,
+        letra: letra, 
       },
     });
-    return response.status(201).json(novaAlternativa);
+    return res.status(201).json(novaAlternativa);
   } catch (error) {
     console.error("Erro ao criar alternativa:", error);
-    return response.status(500).json({ error: "Erro interno do servidor" });
+    return res.status(500).json({ error: "Erro interno do servidor" });
   }
 });
 
-// R
-Routes.get("/listarTodasAlternativas", async (request, response) => {
+// Listar todas as alternativas
+Routes.get('/listarTodasAlternativas', async (req, res) => {
   try {
     const listaTodasAlternativas = await prisma.alternativa.findMany();
-    return response.status(200).json(listaTodasAlternativas);
+    return res.status(200).json(listaTodasAlternativas);
   } catch (error) {
     console.error("Erro ao listar alternativas:", error);
-    return response.status(500).json({ error: "Erro interno do servidor" });
+    return res.status(500).json({ error: "Erro interno do servidor" });
   }
 });
 
