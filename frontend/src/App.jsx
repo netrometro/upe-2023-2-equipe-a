@@ -1,18 +1,18 @@
+import styled from 'styled-components';
+import './App.css';
+import { AppRoutes } from './routes';
 
-import './App.css'
-import QuestaoList from './componentes/Questoes/QuestaoList'
+const Main = styled.main`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
 
-function App() {
+export function App() {
   return (
-    <>
-      <div>
-      <h1>Banco de Questões e Formulador de Provas</h1>
-      <br/>
-      <br/>
-      <QuestaoList />
-      </div>
-    </>
-  )
+    <Main>
+      <AppRoutes />
+    </Main>
+  );
 }
-
-export default App
