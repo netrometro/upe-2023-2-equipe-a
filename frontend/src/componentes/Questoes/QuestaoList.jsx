@@ -49,7 +49,7 @@ const QuestaoList = () => {
         {questoes.map((questao) => (
           <li key={questao.id}>
             <strong>Título:</strong> {questao.titulo} <br />
-            <strong>Alternativas:</strong> {questao.alternativas.join(', ')} <br />
+            <strong>Alternativas:</strong> {questao.alternativas} <br />
             <strong>Resposta:</strong> {questao.resposta} <br />
           </li>
         ))}
