@@ -88,14 +88,46 @@ Routes.delete("/DeletarQuestao/:id", async (request, response) => {
 
 //CRUD Alternativas -> Rotas do CRUD para Alternativas
 //C
+Routes.post("/CriarAlternativa", async (request, response) => {
+  const { texto , letras  } = request.body;
+  const novaAlternativa = await prisma.alternativa.create({
+    data: {
+      texto: texto,
+      letras: letras
+    }
+  });
+  return response.status(201).json(novaAlternativa);
+});
 //R
+Routes.get("/listarTodasAlternativas" , async (request, response) => {
+
+  const listaTodasAlternativas = await prisma.alternativa.findMany();
+
+  return response.status(200).json(listaTodasAlternativas);
+})
 //U
 //D
 
 
 //CRUD Usuario -> Rotas do CRUD para Usuario
 //C
+Routes.post("/CriarUsuario", async (request, response) => {
+  const { nome , email  } = request.body;
+  const novaUser = await prisma.user.create({
+    data: {
+      nome: nome,
+      email: email
+    }
+  });
+  return response.status(201).json(novaUser);
+});
 //R
+Routes.get("/listarTodosUser" , async (request, response) => {
+
+  const listaTodosUser = await prisma.user.findMany();
+
+  return response.status(200).json(listaTodosUser);
+})
 //U
 //D
 
