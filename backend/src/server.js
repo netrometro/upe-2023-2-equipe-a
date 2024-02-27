@@ -5,7 +5,7 @@ const app = express()
 app.use(express.json())
 
 //Rotas
-const Routes = require('./routes')
+const Routes = require('./routes/routes')
 app.use(Routes)
 
 //cors
