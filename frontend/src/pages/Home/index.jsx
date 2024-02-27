@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { QuestaoList } from "../../componentes/Questoes/QuestaoList";
 import { Header } from "../../componentes/Header";
-import * as C from "./styles";
+import * as C from "./styles"; // Importa os componentes estilizados do arquivo styles.js
 
 export function Home() {
   const [questoes, setQuestoes] = useState([]);
@@ -34,10 +34,10 @@ export function Home() {
     <C.Container>
       <Header />
       {Array.isArray(questoes) && questoes.map((questao) => (
-        <div key={questao.id}>
-          <QuestaoList questao={questao} /> {/* Passando a questao como propriedade para QuestaoList */}
-          <button onClick={() => handleDeleteQuestao(questao.id)}>Deletar</button>
-        </div>
+        <C.QuestaoContainer key={questao.id}> {/* Usamos o componente estilizado QuestaoContainer */}
+          <QuestaoList questao={questao} />
+          <C.DeleteButton onClick={() => handleDeleteQuestao(questao.id)}>Deletar</C.DeleteButton> {/* Usamos o componente estilizado DeleteButton */}
+        </C.QuestaoContainer>
       ))}
     </C.Container>
   );
