@@ -50,21 +50,37 @@ const QuestaoList = () => {
     handleRefresh();
   }
 
+    async function CompartilharQuestao(questaoID) {
+      //funçao criada somente para visualizaçao do botao sem quebrar o sistema
+      await handleRefresh();
+    }
+
+    async function GerarPDFQuestao(questaoID) {
+      //funçao criada somente para visualizaçao do botao sem quebrar o sistema
+      await handleRefresh();
+    }
+
   return (
     <div>
       <h1>Listagem de Questões</h1>
       <ul>
         {questoes.map((questao) => (
           <>
-          <li key={questao.id}>
-            <strong>Título:</strong> {questao.titulo} <br />
-            <strong>Alternativas:</strong> {questao.Alternativas} <br />
-            <strong>Resposta:</strong> {questao.resposta} <br />
-          </li>
-          <button onClick={() => deleteQuestao(questao.id)}>
-            Deletar Questao
-          </button>
-            </>
+            <li key={questao.id}>
+              <strong>Título:</strong> {questao.titulo} <br />
+              <strong>Alternativas:</strong> {questao.Alternativas} <br />
+              <strong>Resposta:</strong> {questao.resposta} <br />
+            </li>
+            <button onClick={() => deleteQuestao(questao.id)}>
+              Deletar Questao
+            </button>
+            <button onClick={() => CompartilharQuestao(questao.id)}>
+            Compartilhar Questao
+            </button>
+            <button onClick={() => GerarPDFQuestao(questao.id)}>
+            Gerar PDF
+            </button>
+          </>
         ))}
       </ul>
       <button onClick={handleRefresh}>Refresh</button>
