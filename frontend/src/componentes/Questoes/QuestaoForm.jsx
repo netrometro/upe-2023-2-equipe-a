@@ -5,6 +5,7 @@ function QuestaoForm () {
   const [titulo, setTitulo] = useState('');
   const [Alternativas, setAlternativas] = useState('');
   const [resposta, setResposta] = useState('');
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,9 +29,11 @@ function QuestaoForm () {
       setResposta('');
 
      // QuestaoForm();
+     
     } catch (error) {
       console.error('Erro ao criar questão:', error);
     }
+    
   };
 
   return (

@@ -22,18 +22,7 @@ const QuestaoList = () => {
       console.error('Erro ao buscar questões:', error);
     }
   };
-  /*
-  const fetchQuestoes = async () => {
-    try {
-      //http://localhost:3333/
-      const response = await axios.get('listarTodasQuestoes');
-      console.log('Tipo da resposta:', typeof response.data);
-      setQuestoes(response.data); 
-    } catch (error) {
-      console.error('Erro ao buscar questões:', error);
-    }
-  };
-  */
+  
   useEffect(() => {
     fetchQuestoes();
   }, []);
@@ -44,7 +33,7 @@ const QuestaoList = () => {
 
   //Funçao deletar questao
   async function deleteQuestao(questaoID) {
-    const response = await axios.delete(
+     await axios.delete(
       `http://localhost:3333/DeletarQuestao/${questaoID}`
     );
     handleRefresh();
