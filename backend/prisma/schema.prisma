@@ -16,7 +16,7 @@ model User {
 model Alternativa {
   id     Int    @id @default(autoincrement())
   texto  String
-  letras String
+  letra String
 }
 
 model Questao {

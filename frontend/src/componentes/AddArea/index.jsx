@@ -20,7 +20,7 @@ export const AddArea = () => {
                 placeholder="Adicione uma alternativa"
                 value={inputText}
                 onChange={e => setInputText(e.target.value)}
-                onKeyUp={handleKeyUp} // Aqui está a correção
+                onKeyUp={handleKeyUp}
             />
         </C.Container>
     );

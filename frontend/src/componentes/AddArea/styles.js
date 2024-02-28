@@ -16,7 +16,7 @@ export const Container = styled.div`
         border: 0px;
         background: transparent;
         outline: 0;
-        color: #FFF;
+        color: #000;
         font-size: 18px;
         flex: 1;
     }

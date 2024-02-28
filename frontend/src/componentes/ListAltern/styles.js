@@ -2,19 +2,15 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  background-color: #20212C;
-  padding: 10px;
+  background-color: #F9F9F9;
+  padding: 20px;
   border-radius: 10px;
+  border: 1px solid;
   margin-bottom: 10px;
   align-items: center;
 
-  input {
-    width: 25px;
-    height: 25px;
-    margin-right: 5px;
-  }
 
   label {
-    color: #CCC;
+    color: #000;
   }
 `;

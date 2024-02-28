@@ -93,10 +93,15 @@ Routes.post('/CriarAlternativa', async (req, res) => {
         letra: letra, 
       },
     });
-    return res.status(201).json(novaAlternativa);
+
+    res.status(201).json({
+      id: novaAlternativa.id,
+      texto: novaAlternativa.texto,
+      letra: novaAlternativa.letra,
+    });
   } catch (error) {
     console.error("Erro ao criar alternativa:", error);
-    return res.status(500).json({ error: "Erro interno do servidor" });
+    res.status(500).json({ error: "Erro interno do servidor" });
   }
 });
 
@@ -110,6 +115,7 @@ Routes.get('/listarTodasAlternativas', async (req, res) => {
     return res.status(500).json({ error: "Erro interno do servidor" });
   }
 });
+
 
 // CRUD Usuario -> Rotas do CRUD para Usuario
 // C
