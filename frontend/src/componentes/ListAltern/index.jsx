@@ -1,12 +1,19 @@
-import { useState } from 'react';
+import React from 'react';
 import * as C from './styles';
 
-export const ListAltern = ({ alternativa }) => {
-
+export const ListAltern = ({ listaAlternativas }) => {
   return (
     <C.Container>
-      <label>{alternativa.texto}</label>
-      <label>{alternativa.letra}</label>
+      {Array.isArray(listaAlternativas) ? (
+        listaAlternativas.map((alternativa, index) => (
+          <div key={index}>
+            <label>{alternativa.texto}</label>
+            <label>{alternativa.letra}</label>
+          </div>
+        ))
+      ) : (
+        <p>Nenhuma alternativa disponível.</p>
+      )}
     </C.Container>
   );
 };

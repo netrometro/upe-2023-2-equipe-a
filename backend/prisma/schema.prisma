@@ -14,8 +14,8 @@ model User {
 }
 
 model Alternativa {
-  id     Int    @id @default(autoincrement())
-  texto  String
+  id    Int    @id @default(autoincrement())
+  texto String
   letra String
 }
 
