@@ -88,8 +88,18 @@ const QuestaoList = () => {
             </button>
             <button onClick={() => handleCompartilhar(questao.id)}>Compartilhar Questao</button>
 
-            {modalAberto && (
+            
+
+            <button onClick={() => GerarPDFQuestao(questao.id)}>
+              Gerar PDF
+            </button>
+          </>
+        ))}
+      </ul>
+      {modalAberto && (
               <div>
+                <br></br>
+                <h3>Confirmação de Envio de Email</h3>
                 <input
                   type="email"
                   placeholder="Digite o e-mail do destinatário"
@@ -98,15 +108,10 @@ const QuestaoList = () => {
                 />
                 <button onClick={handleEnviarEmail}>Enviar E-mail</button>
                 <button onClick={() => setModalAberto(false)}>Cancelar</button>
+                <br></br>
+                <br></br>
               </div>
             )}
-
-            <button onClick={() => GerarPDFQuestao(questao.id)}>
-              Gerar PDF
-            </button>
-          </>
-        ))}
-      </ul>
       <button onClick={handleRefresh}>Refresh</button>
       <QuestaoForm/>
     </div>
