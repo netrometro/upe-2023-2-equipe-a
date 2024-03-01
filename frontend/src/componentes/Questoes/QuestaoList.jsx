@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import QuestaoForm from './QuestaoForm';
 
 const QuestaoList = () => {
   const [questoes, setQuestoes] = useState([]);
@@ -39,15 +40,10 @@ const QuestaoList = () => {
     handleRefresh();
   }
 
-    async function CompartilharQuestao(questaoID) {
-      //funçao criada somente para visualizaçao do botao sem quebrar o sistema
-      await handleRefresh();
-    }
-
-    async function GerarPDFQuestao(questaoID) {
-      //funçao criada somente para visualizaçao do botao sem quebrar o sistema
-      await handleRefresh();
-    }
+  async function GerarPDFQuestao(questaoID) {
+    //funçao criada somente para visualizaçao do botao sem quebrar o sistema
+    await handleRefresh();
+  }
 
   return (
     <div>
@@ -63,7 +59,7 @@ const QuestaoList = () => {
             <button onClick={() => deleteQuestao(questao.id)}>
               Deletar Questao
             </button>
-            <button onClick={() => CompartilharQuestao(questao.id)}>
+            <button >
             Compartilhar Questao
             </button>
             <button onClick={() => GerarPDFQuestao(questao.id)}>
@@ -73,6 +69,7 @@ const QuestaoList = () => {
         ))}
       </ul>
       <button onClick={handleRefresh}>Refresh</button>
+      <QuestaoForm/>
     </div>
   );
 };

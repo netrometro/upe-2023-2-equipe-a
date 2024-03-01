@@ -5,7 +5,7 @@ function QuestaoForm () {
   const [titulo, setTitulo] = useState('');
   const [Alternativas, setAlternativas] = useState('');
   const [resposta, setResposta] = useState('');
-  
+  const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,35 +27,42 @@ function QuestaoForm () {
       setTitulo('');
       setAlternativas('');
       setResposta('');
-
-     // QuestaoForm();
-     
+      
     } catch (error) {
       console.error('Erro ao criar questão:', error);
     }
     
   };
 
+  const ControlaMostrarFormulario = () => {
+    setMostrarFormulario(!mostrarFormulario);
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Criar Nova Questão</h2>
-      <label>
-        Título:
-        <input type="text" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
-      </label>
-      <br />
-      <label>
-        Alternativas (separadas por vírgula):
-        <input type="text" value={Alternativas} onChange={(e) => setAlternativas(e.target.value)} />
-      </label>
-      <br />
-      <label>
-        Resposta:
-        <input type="text" value={resposta} onChange={(e) => setResposta(e.target.value)} />
-      </label>
-      <br />
-      <button type="submit">Criar Questão</button>
-    </form>
+    <>
+    <button onClick={ControlaMostrarFormulario}>Criar Questão</button>
+      {mostrarFormulario && (
+        <form onSubmit={handleSubmit}>
+          <h2>Criar Nova Questão</h2>
+          <label>
+            Título:
+            <input type="text" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
+          </label>
+          <br />
+          <label>
+            Alternativas (separadas por vírgula):
+            <input type="text" value={Alternativas} onChange={(e) => setAlternativas(e.target.value)} />
+          </label>
+          <br />
+          <label>
+            Resposta:
+            <input type="text" value={resposta} onChange={(e) => setResposta(e.target.value)} />
+          </label>
+          <br />
+          <button type="submit">Criar Questão</button>
+        </form>
+      )}
+    </>
   );
 }
 
