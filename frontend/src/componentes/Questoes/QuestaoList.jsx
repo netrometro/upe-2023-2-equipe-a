@@ -5,6 +5,9 @@ import QuestaoForm from './QuestaoForm';
 
 const QuestaoList = () => {
   const [questoes, setQuestoes] = useState([]);
+  const [destinatario, setDestinatario] = useState('');
+  const [modalAberto, setModalAberto] = useState(false);
+  const [questaoSelecionada, setQuestaoSelecionada] = useState(null);
 
   const fetchQuestoes = async () => {
     try {
@@ -45,6 +48,30 @@ const QuestaoList = () => {
     await handleRefresh();
   }
 
+  const handleCompartilhar = (questaoID) => {
+    const questao = questoes.find((q) => q.id === questaoID);
+    setQuestaoSelecionada(questao);
+    setModalAberto(true);
+  };
+
+  const handleEnviarEmail = async () => {
+    try {
+      await axios.post('http://localhost:3333/enviar-email', {
+        destinatario,
+        corpo: `Detalhes da Questão:
+        Título: ${questaoSelecionada.titulo}
+        Alternativas: ${questaoSelecionada.Alternativas}
+        Resposta: ${questaoSelecionada.resposta}`,
+      });
+
+      setModalAberto(false);
+      setDestinatario('');
+      setQuestaoSelecionada(null);
+    } catch (error) {
+      console.error('Erro ao enviar o e-mail:', error);
+    }
+  };
+
   return (
     <div>
       <h1>Listagem de Questões</h1>
@@ -59,11 +86,23 @@ const QuestaoList = () => {
             <button onClick={() => deleteQuestao(questao.id)}>
               Deletar Questao
             </button>
-            <button >
-            Compartilhar Questao
-            </button>
+            <button onClick={() => handleCompartilhar(questao.id)}>Compartilhar Questao</button>
+
+            {modalAberto && (
+              <div>
+                <input
+                  type="email"
+                  placeholder="Digite o e-mail do destinatário"
+                  value={destinatario}
+                  onChange={(e) => setDestinatario(e.target.value)}
+                />
+                <button onClick={handleEnviarEmail}>Enviar E-mail</button>
+                <button onClick={() => setModalAberto(false)}>Cancelar</button>
+              </div>
+            )}
+
             <button onClick={() => GerarPDFQuestao(questao.id)}>
-            Gerar PDF
+              Gerar PDF
             </button>
           </>
         ))}
