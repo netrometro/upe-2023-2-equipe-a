@@ -1,7 +1,8 @@
-
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import * as C from './styles';
 import QuestaoForm from './QuestaoForm';
+import jsPDF from 'jspdf';
 
 const QuestaoList = () => {
   const [questoes, setQuestoes] = useState([]);
@@ -12,11 +13,8 @@ const QuestaoList = () => {
   const fetchQuestoes = async () => {
     try {
       const response = await axios.get('http://localhost:3333/listarTodasQuestoes');
-      
-      // Verificar se a resposta é uma string e tentar convertê-la para um array
-      const responseData = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
-  
-      // Verificar se responseData é um array
+      const responseData = response.data;
+
       if (Array.isArray(responseData)) {
         setQuestoes(responseData);
       } else {
@@ -35,18 +33,38 @@ const QuestaoList = () => {
     fetchQuestoes();
   };
 
-  //Funçao deletar questao
-  async function deleteQuestao(questaoID) {
-     await axios.delete(
-      `http://localhost:3333/DeletarQuestao/${questaoID}`
-    );
-    handleRefresh();
-  }
+  const deleteQuestao = async (questaoID) => {
+    try {
+      await axios.delete(`http://localhost:3333/DeletarQuestao/${questaoID}`);
+      handleRefresh();
+    } catch (error) {
+      console.error('Erro ao deletar questão:', error);
+    }
+  };
 
-  async function GerarPDFQuestao(questaoID) {
-    //funçao criada somente para visualizaçao do botao sem quebrar o sistema
-    await handleRefresh();
-  }
+  const GerarPDFQuestao = async (questaoID) => {
+    try {
+      const questao = questoes.find((q) => q.id === questaoID);
+      if (!questao) {
+        console.error('Questão não encontrada.');
+        return;
+      }
+
+      // aqui adiciona o contador de vezes que o PDF foi gerado para esta questão
+      questao.quantidadePDFsGerados = (questao.quantidadePDFsGerados || 0) + 1;
+
+      const doc = new jsPDF();
+      doc.text(`Título: ${questao.titulo}`, 10, 10);
+      doc.text(`Alternativas: ${questao.Alternativas}`, 10, 20);
+      doc.text(`Resposta: ${questao.resposta}`, 10, 30);
+      doc.save('questao.pdf');
+      
+      // Atualiza a lista de questões com a nova contagem de PDFs gerados
+      setQuestoes(prevQuestoes => [...prevQuestoes]);
+    } catch (error) {
+      console.error('Erro ao gerar PDF da questão:', error);
+    }
+  };
 
   const handleCompartilhar = (questaoID) => {
     const questao = questoes.find((q) => q.id === questaoID);
@@ -73,48 +91,43 @@ const QuestaoList = () => {
   };
 
   return (
-    <div>
+    <C.Container>
       <h1>Listagem de Questões</h1>
       <ul>
         {questoes.map((questao) => (
-          <>
-            <li key={questao.id}>
-              <strong>Título:</strong> {questao.titulo} <br />
-              <strong>Alternativas:</strong> {questao.Alternativas} <br />
-              <strong>Resposta:</strong> {questao.resposta} <br />
-            </li>
+          <li key={questao.id}>
+            <strong>Título:</strong> {questao.titulo} <br />
+            <strong>Alternativas:</strong> {questao.Alternativas} <br />
+            <strong>Resposta:</strong> {questao.resposta} <br />
+            <strong>PDFs gerados:</strong> {questao.quantidadePDFsGerados || 0} <br />
             <button onClick={() => deleteQuestao(questao.id)}>
-              Deletar Questao
+              Deletar Questão
             </button>
-            <button onClick={() => handleCompartilhar(questao.id)}>Compartilhar Questao</button>
-
-            
-
+            <button onClick={() => handleCompartilhar(questao.id)}>Compartilhar Questão</button>
             <button onClick={() => GerarPDFQuestao(questao.id)}>
               Gerar PDF
             </button>
-          </>
+          </li>
         ))}
       </ul>
       {modalAberto && (
-              <div>
-                <br></br>
-                <h3>Confirmação de Envio de Email</h3>
-                <input
-                  type="email"
-                  placeholder="Digite o e-mail do destinatário"
-                  value={destinatario}
-                  onChange={(e) => setDestinatario(e.target.value)}
-                />
-                <button onClick={handleEnviarEmail}>Enviar E-mail</button>
-                <button onClick={() => setModalAberto(false)}>Cancelar</button>
-                <br></br>
-                <br></br>
-              </div>
-            )}
+        <div>
+          <br />
+          <h3>Confirmação de Envio de Email</h3>
+          <input
+            type="email"
+            placeholder="Digite o e-mail do destinatário"
+            value={destinatario}
+            onChange={(e) => setDestinatario(e.target.value)}
+          />
+          <button onClick={handleEnviarEmail}>Enviar E-mail</button>
+          <button onClick={() => setModalAberto(false)}>Cancelar</button>
+          <br /><br />
+        </div>
+      )}
       <button onClick={handleRefresh}>Refresh</button>
-      <QuestaoForm/>
-    </div>
+      <QuestaoForm />
+    </C.Container>
   );
 };
 
