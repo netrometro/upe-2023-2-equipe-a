@@ -1,8 +1,13 @@
-import './App.css';
-import { AppRoutes } from './routes';
 
-export function App() {
+import './App.css'
+import QuestaoHome from './componentes/Questoes/QuestaoHome'
+
+function App() {
   return (
-      <AppRoutes />
-  );
+    <>
+      <QuestaoHome/>
+    </>
+  )
 }
+
+export default App

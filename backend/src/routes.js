@@ -1,253 +1,133 @@
+//Arquivo para rotas 
 const express = require("express");
-const Routes = express.Router(); // variável para chamada do Router
-const { PrismaClient } = require("@prisma/client");
-
+const Routes = express.Router(); //variavel para chamada do Router
+const {PrismaClient} = require("@prisma/client");
+const { response } = require("express");
 const prisma = new PrismaClient();
 
-// CRUD Questoes -> Rotas do CRUD para Questoes
-// C
 
-// R
-Routes.get("/listarTodasQuestoes", async (request, response) => {
-  try {
-    const listaTodasQestoes = await prisma.questao.findMany();
-    return response.status(200).json(listaTodasQestoes);
-  } catch (error) {
-    console.error("Erro ao listar questões:", error);
-    return response.status(500).json({ error: "Erro interno do servidor" });
-  }
+
+//CRUD Questoes -> Rotas do CRUD para Questoes
+//C
+Routes.post("/CriarQuestoes", async (request, response) => {
+  const { titulo, Alternativas,resposta  } = request.body;
+  //Questoes.push({ titulo });
+  const novaQuestao = await prisma.questao.create({
+    data: {
+      titulo: titulo,
+      Alternativas: Alternativas,
+      resposta: resposta
+    }
+  });
+  return response.status(201).json(novaQuestao);
 });
+//R
+Routes.get("/listarTodasQuestoes" , async (request, response) => {
 
-// U
+  const listaTodasQestoes = await prisma.questao.findMany();
+
+  return response.status(200).json(listaTodasQestoes);
+})
+//U
 Routes.put("/UpdateQuestao", async (request, response) => {
-  const { id, titulo, Alternativas, resposta } = request.body;
+  //, titulo, Alternativas, resposta
+  const {id, titulo, Alternativas, resposta} = request.body;
 
-  try {
-    const intId = parseInt(id);
+  const intId = parseInt(id);
 
-    if (!intId) {
-      return response.status(400).json("Id é obrigatório");
-    }
-
-    const QuestaoExiste = await prisma.questao.findUnique({
-      where: { id: intId },
-    });
-
-    if (!QuestaoExiste) {
-      return response.status(404).json("Questão não existe");
-    }
-
-    const update = await prisma.questao.update({
-      where: { id: intId },
-      data: {
-        titulo: titulo,
-        Alternativas: Alternativas,
-        resposta: resposta,
-      },
-    });
-
-    return response.status(200).json(update);
-  } catch (error) {
-    console.error("Erro ao atualizar questão:", error);
-    return response.status(500).json({ error: "Erro interno do servidor" });
+  //verifica se o id existe
+  if (!intId) {
+    return response.status(400).json("Id é obrigatorio");
   }
-});
 
-// D
+  //verifica se a questao existe
+  const QuestaoExiste = await prisma.questao.findUnique({ where: { id: intId } });
+  if (!QuestaoExiste) {
+    return response.status(404).json("Questao nao exite");
+  }
+  
+  //Faz a substituiçao dos valores
+  const update = await prisma.questao.update({
+    where: { 
+      id: intId
+     },
+     data:{
+      titulo: titulo,
+      Alternativas: Alternativas,
+      resposta: resposta,
+     },
+  });
+
+  return response.status(200).json(update);
+})
+//D
 Routes.delete("/DeletarQuestao/:id", async (request, response) => {
+  //pega o id dos parametros da URL
   const { id } = request.params;
+  //verifica de o ID veio na URL
+  const intId = parseInt(id);
+  if (!intId) {
+    return response.status(400).json("Id é obrigatorio");
+  }
+  //verifica se a questao realmente existe
+  const QuestaoExiste = await prisma.questao.findUnique({
+    where: { id: intId },
+  });
+  if (!QuestaoExiste) {
+    return response.status(404).json("Questao nao existe");
+  }
+  //questao existe, manda dleetar
+  await prisma.questao.delete({ where: { id: intId } });
+  //retorna ok pra operaçao de deletar a questao pelo id
+  return response.status(200).send();
+});
 
-  try {
-    const intId = parseInt(id);
 
-    if (!intId) {
-      return response.status(400).json("Id é obrigatório");
+//CRUD Alternativas -> Rotas do CRUD para Alternativas
+//C
+Routes.post("/CriarAlternativa", async (request, response) => {
+  const { texto , letras  } = request.body;
+  const novaAlternativa = await prisma.alternativa.create({
+    data: {
+      texto: texto,
+      letras: letras
     }
-
-    const QuestaoExiste = await prisma.questao.findUnique({
-      where: { id: intId },
-    });
-
-    if (!QuestaoExiste) {
-      return response.status(404).json("Questão não existe");
-    }
-
-    await prisma.questao.delete({ where: { id: intId } });
-
-    return response.status(200).send();
-  } catch (error) {
-    console.error("Erro ao deletar questão:", error);
-    return response.status(500).json({ error: "Erro interno do servidor" });
-  }
+  });
+  return response.status(201).json(novaAlternativa);
 });
+//R
+Routes.get("/listarTodasAlternativas" , async (request, response) => {
 
-// CRUD Alternativas -> Rotas do CRUD para Alternativas
-// C
-Routes.post('/CriarAlternativa', async (req, res) => {
-  const { texto, letra } = req.body;
+  const listaTodasAlternativas = await prisma.alternativa.findMany();
 
-  try {
-    const novaAlternativa = await prisma.alternativa.create({
-      data: {
-        texto: texto,
-        letra: letra, 
-      },
-    });
-
-    res.status(201).json({
-      id: novaAlternativa.id,
-      texto: novaAlternativa.texto,
-      letra: novaAlternativa.letra,
-    });
-  } catch (error) {
-    console.error("Erro ao criar alternativa:", error);
-    res.status(500).json({ error: "Erro interno do servidor" });
-  }
-});
-
-// Listar todas as alternativas
-Routes.get('/listarTodasAlternativas', async (req, res) => {
-  try {
-    const listaTodasAlternativas = await prisma.alternativa.findMany();
-    return res.status(200).json(listaTodasAlternativas);
-  } catch (error) {
-    console.error("Erro ao listar alternativas:", error);
-    return res.status(500).json({ error: "Erro interno do servidor" });
-  }
-});
+  return response.status(200).json(listaTodasAlternativas);
+})
+//U
+//D
 
 
-// CRUD Usuario -> Rotas do CRUD para Usuario
-// C
+//CRUD Usuario -> Rotas do CRUD para Usuario
+//C
 Routes.post("/CriarUsuario", async (request, response) => {
-  const { nome, email } = request.body;
-
-  try {
-    const novaUser = await prisma.user.create({
-      data: {
-        nome: nome,
-        email: email,
-      },
-    });
-    return response.status(201).json(novaUser);
-  } catch (error) {
-    console.error("Erro ao criar usuário:", error);
-    return response.status(500).json({ error: "Erro interno do servidor" });
-  }
+  const { nome , email  } = request.body;
+  const novaUser = await prisma.user.create({
+    data: {
+      nome: nome,
+      email: email
+    }
+  });
+  return response.status(201).json(novaUser);
 });
+//R
+Routes.get("/listarTodosUser" , async (request, response) => {
 
-// R
-Routes.get("/listarTodosUser", async (request, response) => {
-  try {
-    const listaTodosUser = await prisma.user.findMany();
-    return response.status(200).json(listaTodosUser);
-  } catch (error) {
-    console.error("Erro ao listar usuários:", error);
-    return response.status(500).json({ error: "Erro interno do servidor" });
-  }
-});
+  const listaTodosUser = await prisma.user.findMany();
 
-// CRUD Provas -> Rotas do CRUD para Provas
-// C
-Routes.post("/CriarProva", async (request, response) => {
-  const { nome, questoes } = request.body;
+  return response.status(200).json(listaTodosUser);
+})
+//U
+//D
 
-  try {
-    const novaProva = await prisma.prova.create({
-      data: {
-        nome: nome,
-        questoes: {
-          connect: questoes.map((questaoId) => ({ id: questaoId })),
-        },
-      },
-    });
-    return response.status(201).json(novaProva);
-  } catch (error) {
-    console.error("Erro ao criar prova:", error);
-    return response.status(500).json({ error: "Erro interno do servidor" });
-  }
-});
 
-// R
-Routes.get("/listarTodasProvas", async (request, response) => {
-  try {
-    const listaTodasProvas = await prisma.prova.findMany({
-      include: {
-        questoes: true,
-      },
-    });
-    return response.status(200).json(listaTodasProvas);
-  } catch (error) {
-    console.error("Erro ao listar provas:", error);
-    return response.status(500).json({ error: "Erro interno do servidor" });
-  }
-});
-
-// U
-// Routes.put("/UpdateProva", async (request, response) => {
-//   const { id, nome, questoes } = request.body;
-
-//   try {
-//     const intId = parseInt(id);
-
-//     if (!intId) {
-//       return response.status(400).json("Id é obrigatório");
-//     }
-
-//     const ProvaExiste = await prisma.prova.findUnique({
-//       where: { id: intId },
-//     });
-
-//     if (!ProvaExiste) {
-//       return response.status(404).json("Prova não existe");
-//     }
-
-//     const update = await prisma.prova.update({
-//       where: { id: intId },
-//       data: {
-//         nome: nome,
-//         questoes: {
-//           set: questoes.map((questaoId) => ({ id: questaoId })),
-//         },
-//       },
-//       include: {
-//         questoes: true,
-//       },
-//     });
-
-//     return response.status(200).json(update);
-//   } catch (error) {
-//     console.error("Erro ao atualizar prova:", error);
-//     return response.status(500).json({ error: "Erro interno do servidor" });
-//   }
-// });
-
-// // D
-// Routes.delete("/DeletarProva/:id", async (request, response) => {
-//   const { id } = request.params;
-
-//   try {
-//     const intId = parseInt(id);
-
-//     if (!intId) {
-//       return response.status(400).json("Id é obrigatório");
-//     }
-
-//     const ProvaExiste = await prisma.prova.findUnique({
-//       where: { id: intId },
-//     });
-
-//     if (!ProvaExiste) {
-//       return response.status(404).json("Prova não existe");
-//     }
-
-//     await prisma.prova.delete({ where: { id: intId } });
-
-//     return response.status(200).send();
-//   } catch (error) {
-//     console.error("Erro ao deletar prova:", error);
-//     return response.status(500).json({ error: "Erro interno do servidor" });
-//   }
-// });
-
-module.exports = Routes; // exportando as rotas
+//exportando as rotas
+module.exports = Routes;
