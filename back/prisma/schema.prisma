@@ -15,6 +15,7 @@ model User {
   id    Int    @id @default(autoincrement())
   name  String
   email String @unique
+  provas Provas[]
 }
 
 //Alternativa
@@ -25,14 +26,16 @@ model Questao {
   titulo       String   @unique
   Alternativas String[] //depois tem que trocar esse tipo, pq o novo tipo vai ser Alternativa
   resposta     String
+  provas Provas[]
 }
 
 //Provas
 model Provas {
-  titulo String @unique
-  data String
-  professor User[]
-  nome String
+  id         Int      @id @default(autoincrement())
+  titulo     String
+  data       String   @unique
+  questoes   Questao[]
+  professores User     @relation(fields: [professorId], references: [id])
   disciplina String
-  questoes Questao[]
+  professorId Int
 }
