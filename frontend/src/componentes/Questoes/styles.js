@@ -30,7 +30,7 @@ export const Container = styled.div`
   p {
     color: red;
     font-weight: bold;
-    margin-bottom: 5px
+    margin-bottom: 5px;
   }
   
   button {
@@ -41,6 +41,7 @@ export const Container = styled.div`
     border-radius: 5px;
     cursor: pointer; 
     transition: background-color 0.3s ease; 
+    margin-right: 5px;
   }
   
   button:hover {

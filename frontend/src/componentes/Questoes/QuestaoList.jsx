@@ -50,11 +50,17 @@ const QuestaoList = () => {
         return;
       }
 
+      // aqui adiciona o contador de vezes que o PDF foi gerado para esta questão
+      questao.quantidadePDFsGerados = (questao.quantidadePDFsGerados || 0) + 1;
+
       const doc = new jsPDF();
       doc.text(`Título: ${questao.titulo}`, 10, 10);
       doc.text(`Alternativas: ${questao.Alternativas}`, 10, 20);
       doc.text(`Resposta: ${questao.resposta}`, 10, 30);
       doc.save('questao.pdf');
+      
+      // Atualiza a lista de questões com a nova contagem de PDFs gerados
+      setQuestoes(prevQuestoes => [...prevQuestoes]);
     } catch (error) {
       console.error('Erro ao gerar PDF da questão:', error);
     }
@@ -93,6 +99,7 @@ const QuestaoList = () => {
             <strong>Título:</strong> {questao.titulo} <br />
             <strong>Alternativas:</strong> {questao.Alternativas} <br />
             <strong>Resposta:</strong> {questao.resposta} <br />
+            <strong>PDFs gerados:</strong> {questao.quantidadePDFsGerados || 0} <br />
             <button onClick={() => deleteQuestao(questao.id)}>
               Deletar Questão
             </button>
