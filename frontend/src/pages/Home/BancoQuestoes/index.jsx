@@ -9,13 +9,16 @@ export function BancoQuestoes() {
     return (
       <>
         <Header />
-        <C.BankContainer>
-          <h1>Banco de Questões e Formulador de Provas</h1>
-          <br/>
-          <QuestaoForm />
-          <br/>
-          <QuestaoList />
-        </C.BankContainer>
+        <C.MacroContainer>
+          <C.BankContainer>
+            <h1>Banco de Questões e Formulador de Provas</h1>
+            <br/>
+            <QuestaoForm />
+            <br/>
+            <QuestaoList />
+          </C.BankContainer>
+        </C.MacroContainer>
+        
       </>
     )
   
