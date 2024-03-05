@@ -1,8 +1,11 @@
 const express = require("express");
-const Routes = express.Router(); // variável para chamada do Router
-const { PrismaClient } = require("@prisma/client");
+const Routes = express.Router(); //variavel para chamada do Router
+const {PrismaClient} = require("@prisma/client");
+const { response } = require("express");
 
 const prisma = new PrismaClient();
+
+
 
 // CRUD Questoes -> Rotas do CRUD para Questoes
 // C
