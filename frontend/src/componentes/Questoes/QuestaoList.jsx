@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import * as C from './styles';
 import QuestaoForm from './QuestaoForm';
-import { QuestaoPDF } from './QuestaoPDF';
+import jsPDF from 'jspdf';
 
 const QuestaoList = () => {
   const [questoes, setQuestoes] = useState([]);
@@ -12,8 +13,8 @@ const QuestaoList = () => {
   const fetchQuestoes = async () => {
     try {
       const response = await axios.get('http://localhost:3333/listarTodasQuestoes');
-      const responseData = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
-  
+      const responseData = response.data;
+
       if (Array.isArray(responseData)) {
         setQuestoes(responseData);
       } else {
@@ -32,10 +33,32 @@ const QuestaoList = () => {
     fetchQuestoes();
   };
 
-  async function deleteQuestao(questaoID) {
-    await axios.delete(`http://localhost:3333/DeletarQuestao/${questaoID}`);
-    handleRefresh();
-  }
+  const deleteQuestao = async (questaoID) => {
+    try {
+      await axios.delete(`http://localhost:3333/DeletarQuestao/${questaoID}`);
+      handleRefresh();
+    } catch (error) {
+      console.error('Erro ao deletar questão:', error);
+    }
+  };
+
+  const GerarPDFQuestao = async (questaoID) => {
+    try {
+      const questao = questoes.find((q) => q.id === questaoID);
+      if (!questao) {
+        console.error('Questão não encontrada.');
+        return;
+      }
+
+      const doc = new jsPDF();
+      doc.text(`Título: ${questao.titulo}`, 10, 10);
+      doc.text(`Alternativas: ${questao.Alternativas}`, 10, 20);
+      doc.text(`Resposta: ${questao.resposta}`, 10, 30);
+      doc.save('questao.pdf');
+    } catch (error) {
+      console.error('Erro ao gerar PDF da questão:', error);
+    }
+  };
 
   const handleCompartilhar = (questaoID) => {
     const questao = questoes.find((q) => q.id === questaoID);
@@ -62,7 +85,7 @@ const QuestaoList = () => {
   };
 
   return (
-    <div>
+    <C.Container>
       <h1>Listagem de Questões</h1>
       <ul>
         {questoes.map((questao) => (
@@ -70,9 +93,13 @@ const QuestaoList = () => {
             <strong>Título:</strong> {questao.titulo} <br />
             <strong>Alternativas:</strong> {questao.Alternativas} <br />
             <strong>Resposta:</strong> {questao.resposta} <br />
-            <button onClick={() => deleteQuestao(questao.id)}>Deletar Questao</button>
-            <button onClick={() => handleCompartilhar(questao.id)}>Compartilhar Questao</button>
-            <QuestaoPDF destinatario={destinatario} setDestinatario={setDestinatario} /> {/* Componente MyComponent */}
+            <button onClick={() => deleteQuestao(questao.id)}>
+              Deletar Questão
+            </button>
+            <button onClick={() => handleCompartilhar(questao.id)}>Compartilhar Questão</button>
+            <button onClick={() => GerarPDFQuestao(questao.id)}>
+              Gerar PDF
+            </button>
           </li>
         ))}
       </ul>
@@ -88,13 +115,12 @@ const QuestaoList = () => {
           />
           <button onClick={handleEnviarEmail}>Enviar E-mail</button>
           <button onClick={() => setModalAberto(false)}>Cancelar</button>
-          <br />
-          <br />
+          <br /><br />
         </div>
       )}
       <button onClick={handleRefresh}>Refresh</button>
-      <QuestaoForm/>
-    </div>
+      <QuestaoForm />
+    </C.Container>
   );
 };
 
